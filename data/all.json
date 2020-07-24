@@ -1,0 +1,57 @@
+{
+  "routes": [
+    {
+      "name": "red",
+      "avg_daily_mileage": "5",
+      "can_double": false
+    },
+    {
+      "name": "blue",
+      "avg_daily_mileage": "8",
+      "can_double": false
+    },
+    {
+      "name": "green",
+      "avg_daily_mileage": "3",
+      "can_double": false
+    }
+  ],
+  "buses": [
+    {
+      "name": "one",
+      "current_mileage": 0,
+      "desired_mileage": 100,
+      "excluded": [],
+      "should_run_today": true
+    },
+    {
+      "name": "two",
+      "current_mileage": 108,
+      "desired_mileage": 200,
+      "excluded": [],
+      "should_run_today": true
+    },
+    {
+      "name": "three",
+      "current_mileage": 20,
+      "desired_mileage": 130,
+      "excluded": [],
+      "should_run_today": true
+    },
+    {
+      "name": "four",
+      "current_mileage": 80,
+      "desired_mileage": 300,
+      "excluded": [],
+      "should_run_today": true
+    }
+  ],
+  "calendar": {
+    "start_day": "06/29/2020",
+    "end_day": "07/03/2020",
+    "run_on_weekends": false,
+    "holidays": [
+      "07/03/2020"
+    ]
+  }
+}

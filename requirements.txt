@@ -1,0 +1,30 @@
+Big picture: Determine which bus to put on which route, given current mileage and desired mileage, as well as average daily mileage per route.
+
+Daily use:
+at the end of the day, input the actual mileage of each bus, and get out route assignments (potentially the same, potentially modified)
+route assignments are output as:
+BUS#    current mileage     route
+
+
+Semester (or whenever?) set-up:
+list buses that are available
+list routes and avg daily mileages
+give a start day, end day, and which days to exclude from calculations
+
+
+Route assignment considerations:
+must be able to exclude buses from routes
+  should that be part of semester set-up or daily use?
+must be able to specify routes that can be doubled:
+  once again, set-up or daily?
+
+Technical considerations:
+GUI?
+  planning on using excel, may do something else
+data storage?
+  text file? xml file? excel file? actual database? (don't use an actual database)
+algorithm?
+  going to have to loop through with each possible evening/other route pairing, I think. Can pick "best" option by minimizing the difference between actual and desired
+
+Further notes:
+decided that I would like to store all data in a json format, running the program opens up an excel sheet with the data (multiple pages, first one with the daily deets, other pages for semester stuff?) autopopulated from the json. User makes edits, those edits are saved into the json file.
