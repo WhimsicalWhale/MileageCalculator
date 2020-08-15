@@ -2,6 +2,7 @@ import unittest
 import datetime
 import copy
 from program import *
+from data_cleaning import *
 
 class test_program(unittest.TestCase):
     routes = [
@@ -409,6 +410,23 @@ class test_program(unittest.TestCase):
                 assert bus['routes'][0]['name'] == 'evening'
             else:
                 assert False
+        
+    def test_add_routes_with_multiple_exclusions(self):
+        nBuses = copy.deepcopy(self.buses)
+        nBuses[0]['excluded'].extend(['red', 'green'])
+        add_routes(nBuses, self.routes)
+        for bus in nBuses:
+            if bus['name'] == 'one':
+                assert bus['routes'][0]['name'] == 'blue'
+            elif bus['name'] == 'two':
+                assert bus['routes'][0]['name'] == 'evening'
+                assert bus['routes'][1]['name'] == 'red'
+            elif bus['name'] == 'three':
+                assert bus['routes'][0]['name'] == 'green'
+            elif bus['name'] == 'four':
+                assert len(bus['routes']) == 0
+            else:
+                assert False
     
     def test_will_exceed_desired_mileage(self):
         nBuses = [
@@ -558,9 +576,36 @@ class test_program(unittest.TestCase):
         assert len(result) == 1
         assert result[0] == 'yellow'
     
-    def test_bus_should_run(self):
-        nBuses = copy.deepcopy(self.buses)
+    # def test_bus_should_run(self):
+    #     nBuses = copy.deepcopy(self.buses)
 
+    def test_parse_field(self):
+        assert parse_field('random string', 'name') == 'random string'
+        assert parse_field('087354', 'name') == '087354'
+
+        assert parse_field('85', 'desired_mileage') == 85
+        assert parse_field('100000', 'avg_daily_mileage') == 100000
+        with self.assertRaises(Exception):
+            parse_field('8.5', 'avg_daily_mileage')
+
+        assert parse_field('T', 'can_double') == True
+        assert parse_field('true', 'available_evening') == True
+        assert parse_field('FALSE', 'can_double') == False
+        assert parse_field('f', 'weekends') == False
+        with self.assertRaises(Exception):
+            parse_field('troo', 'available_evening')
+
+        assert parse_field('', 'excluded') == []
+        a_list = parse_field('red', 'excluded')
+        assert a_list[0] == 'red'
+        a_list = parse_field('red-green-blue', 'excluded')
+        assert a_list[0] == 'red'
+        assert a_list[1] == 'green'
+        assert a_list[2] == 'blue'
+
+        assert parse_field('02/08/2020', 'date') == '02/08/2020'
+        with self.assertRaises(Exception):
+            parse_field('2/9/2020', 'date')
 
 
 # any helper functions to be used in unit tests

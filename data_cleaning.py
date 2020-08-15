@@ -1,17 +1,34 @@
 # this is just reading in the data from the csv files and parsing them to the format I want to deal with
+import re
 
-def parse_field(field):
-    # should it be a number?
-    if field.isdigit():
-        field = float(field)
-    # parse any booleans into booleans
-    elif field.lower() in ['true', 't']:
-        field = True
-    elif field.lower() in ['false', 'f']:
-        field = False
-    # split up the list of exclusions
-    elif '-' in field:
-        field = field.split('-')
+def parse_field(field, label):
+    if label == 'name':
+        # take whatever string they put in
+        return field
+    elif label in ['desired_mileage', 'avg_daily_mileage']:
+        # must be a number
+        if field.isdigit():
+            field = float(field)
+        else:
+            raise Exception("Expecting a whole number, instead got {}".format(field))
+    elif label in ['can_double', 'available_evening', 'weekends']:
+        # parse it into a boolean
+        if field.lower() in ['true', 't']:
+            field = True
+        elif field.lower() in ['false', 'f']:
+            field = False
+        else:
+            raise Exception("Expecting a True/False value, instead got {}".format(field))
+    elif label == 'excluded':
+        if field == '':
+            field = []
+        elif '-' in field:
+            field = field.split('-')
+        else:
+            field = [field]
+    elif label == 'date':
+        if re.match(r'\d\d\/\d\d\/20\d\d$', field) == None:
+            raise Exception("Dates must be in MM/DD/YYYY format, got {} instead".format(field))
     return field
 
 def load_data(filename, labels):
@@ -24,7 +41,7 @@ def load_data(filename, labels):
             obj = {}
             for i in range(len(labels)):
                 if i < len(details):
-                    obj[labels[i]] = parse_field(details[i])
+                    obj[labels[i]] = parse_field(details[i], labels[i])
             loaded.append(obj)
     return loaded
 
@@ -35,13 +52,13 @@ def load_calendar_data():
         f.readline()
         calendar['holidays'] = []
         details = f.readline().strip().split(',')
-        calendar['holidays'].append(details[0])
-        calendar['start_day'] = parse_field(details[1])
-        calendar['end_day'] = parse_field(details[2])
-        calendar['run_on_weekends'] = parse_field(details[3])
+        calendar['holidays'].append(parse_field(details[0], 'date'))
+        calendar['start_day'] = parse_field(details[1], 'date')
+        calendar['end_day'] = parse_field(details[2], 'date')
+        calendar['run_on_weekends'] = parse_field(details[3], 'weekends')
         # any remaining lines have holidays in the first entry
         for line in f:
-            calendar['holidays'].append(line.strip().split(',')[0])
+            calendar['holidays'].append(parse_field(line.strip().split(',')[0], 'date'))
     return calendar
 
 def add_daily_data(data):
@@ -56,11 +73,8 @@ def add_daily_data(data):
 
 def update_exclusions(buses):
     for bus in buses:
-        if bus['excluded'] == '':
-            bus['excluded'] == []
-        elif 'evening' in bus['excluded']:
-            bus['excluded'].append('fake')
-    
+        if 'evening' in bus['excluded']:
+            bus['excluded'].append('fake')    
 
 def load_all_data():
     # set up all our variables we're going to use

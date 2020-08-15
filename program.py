@@ -131,6 +131,7 @@ def process_not_assigned(buses, routes):
     print('!!! Unable to assign all routes !!!')
     for route_name in not_assigned:
       print('Route {} was not assigned'.format(route_name))
+    print()
   return not_assigned
 
 def multiple_routes(routes):
@@ -138,16 +139,19 @@ def multiple_routes(routes):
     return "None"
   ret = ''
   for route in routes:
-    ret += route['name'] + ' (' + str(route['avg_daily_mileage']) + '), '
+    ret += route['name'] + ' (' + str(route['avg_daily_mileage'])[:-2] + '), '
   return ret[:-2]
 
 def output_routes(buses):
-  print('bus\tcurrent\ttarget\troute and avg mileage')
+  print('BUS\tCURRENT\t\tTARGET\t\tROUTE AND AVG MILEAGE')
   for bus in buses:
-    print('{}\t{}\t{:.2f}\t{}'.format(bus['name'], bus['current_mileage'], bus['target_mileage'], multiple_routes(bus['routes'])))
+    print('{:.0f}\t{:<16.0f}{:<16.2f}{}'.format(bus['name'], bus['current_mileage'], bus['target_mileage'], multiple_routes(bus['routes'])))
 
 
 if __name__ == "__main__":
+  # so the user knows things have started
+  print("Calculating, please wait...\n")
+
   # load the data
   data = load_all_data()
 
@@ -168,12 +172,17 @@ if __name__ == "__main__":
   output_routes(data['buses'])
 
 
-## TODO
-# make exe, make sure that works
-
 
 # additional features to add next releases:
 # manually assign a bus to a route
-# better input validation (number fields muct be numbers, give informative error if not, etc.)
 # should specify if bus should run that day or not
+# option in daily to manually set date you're calculating for
+# consider moving away from having evening hard coded in as being named "evening"
+#   alex suggests having another column and listing the route(s) it can double with
+
+# known bug:
+#   if the bus that wants the least mileage cannot be assigned to the route that has the least mileage
+#   that route will not be assigned
+#   maybe fix it with a pass afterward to see if there is an unassigned route and unassigned bus
+#   work your way up, as it were (can bus that wants least mileage "swap" with bus that wants second last mileage?)
 
