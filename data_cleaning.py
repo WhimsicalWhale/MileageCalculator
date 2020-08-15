@@ -1,35 +1,52 @@
 # this is just reading in the data from the csv files and parsing them to the format I want to deal with
 import re
 
-def parse_field(field, label):
-    if label == 'name':
-        # take whatever string they put in
-        return field
-    elif label in ['desired_mileage', 'avg_daily_mileage']:
-        # must be a number
-        if field.isdigit():
-            field = float(field)
-        else:
-            raise Exception("Expecting a whole number, instead got {}".format(field))
-    elif label in ['can_double', 'available_evening', 'weekends']:
-        # parse it into a boolean
-        if field.lower() in ['true', 't']:
-            field = True
-        elif field.lower() in ['false', 'f']:
-            field = False
-        else:
-            raise Exception("Expecting a True/False value, instead got {}".format(field))
-    elif label == 'excluded':
-        if field == '':
-            field = []
-        elif '-' in field:
-            field = field.split('-')
-        else:
-            field = [field]
-    elif label == 'date':
-        if re.match(r'\d\d\/\d\d\/20\d\d$', field) == None:
-            raise Exception("Dates must be in MM/DD/YYYY format, got {} instead".format(field))
+def parse_as_digit(field):
+    if field.isdigit():
+        field = float(field)
+    else:
+        raise Exception("Expecting a whole number, instead got {}".format(field))
     return field
+
+def parse_as_boolean(field):
+    if field.lower() in ['true', 't']:
+        field = True
+    elif field.lower() in ['false', 'f']:
+        field = False
+    else:
+        raise Exception("Expecting a True/False value, instead got {}".format(field))
+    return field
+
+def parse_excluded_list(field):
+    if field == '':
+        field = []
+    elif '-' in field:
+        field = field.split('-')
+    else:
+        field = [field]
+    return field
+
+def parse_as_date(field):
+    if re.match(r'\d\d\/\d\d\/20\d\d$', field) == None:
+        raise Exception("Dates must be in MM/DD/YYYY format, got {} instead".format(field))
+    return field
+
+parsing_dict = {
+    'name': lambda x: x,
+    'bus_name': lambda x: x,
+    'curr_mileage': parse_as_digit,
+    'desired_mileage': parse_as_digit,
+    'avg_daily_mileage': parse_as_digit,
+    'can_double': parse_as_boolean,
+    'available_evening': parse_as_boolean,
+    'should_run': parse_as_boolean,
+    'weekends': parse_as_boolean,
+    'excluded': parse_excluded_list,
+    'date': parse_as_date
+}
+
+def parse_field(field, label):
+    return parsing_dict[label](field)
 
 def load_data(filename, labels):
     loaded = []

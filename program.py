@@ -145,7 +145,7 @@ def multiple_routes(routes):
 def output_routes(buses):
   print('BUS\tCURRENT\t\tTARGET\t\tROUTE AND AVG MILEAGE')
   for bus in buses:
-    print('{:.0f}\t{:<16.0f}{:<16.2f}{}'.format(bus['name'], bus['current_mileage'], bus['target_mileage'], multiple_routes(bus['routes'])))
+    print('{}\t{:<16.0f}{:<16.2f}{}'.format(bus['name'], bus['current_mileage'], bus['target_mileage'], multiple_routes(bus['routes'])))
 
 
 if __name__ == "__main__":
