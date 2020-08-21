@@ -2,6 +2,7 @@ import json
 import datetime
 import copy
 import sys
+import pprint
 from data_cleaning import load_all_data
 
 def parse_time(date_str):
@@ -30,7 +31,7 @@ def add_routes(buses, routes):
   }
 
   # get all the evening pairings
-  pairs = all_evening_pairings(routes)
+  pairs = all_evening_pairings(routes, buses)
   pairs.append(None)
 
   # go through and calculate all assignments given each pair
@@ -53,12 +54,28 @@ def add_routes(buses, routes):
 def add_routes_basic(buses, routes, pair):
   # prep buses so everyone has empty routes and are sorted highest target mileage to lowest
   buses.sort(key=lambda bus: bus['target_mileage'], reverse=True)
+  specific_assignments = False
   for bus in buses:
     bus['routes'] = []
+    if bus['assigned_route'] != '':
+      specific_assignments = True
+  removed_buses = []
+  for bus in buses:
+    if not bus['should_run']:
+      removed_buses.append(bus)
+      buses.remove(bus)
   # we're going to add a "fake" route that is our pairing and take out the two we've paired
   processed_routes = copy.deepcopy(routes)
   merge_pair(processed_routes, pair)
   processed_routes.sort(key=lambda route: route['avg_daily_mileage'], reverse=True)
+
+  if specific_assignments:
+    for bus in buses:
+      if bus['assigned_route'] != '':
+        for route in processed_routes:
+          if route['name'] == bus['assigned_route']:
+            bus['routes'].append(route)
+            processed_routes.remove(route)
 
   for route in processed_routes:
     for bus in buses:
@@ -72,11 +89,16 @@ def add_routes_basic(buses, routes, pair):
         else:
           bus['routes'].append(route)
         break
+  buses.extend(removed_buses)
 
-def all_evening_pairings(routes):
+def all_evening_pairings(routes, buses):
+  not_allowed = []
+  for bus in buses:
+    if bus['assigned_route'] != '':
+      not_allowed.append(bus['assigned_route'])
   pairs = []
   for route in routes:
-    if route['name'] != 'evening' and route['can_double']:
+    if route['name'] != 'evening' and route['name'] not in not_allowed and route['can_double']:
       pairs.append(route['name'])
   return pairs
 
@@ -150,10 +172,14 @@ def output_routes(buses):
 
 if __name__ == "__main__":
   # so the user knows things have started
-  print("Calculating, please wait...\n")
+  print("Calculating, please wait...\n", flush=True)
 
   # load the data
   data = load_all_data()
+
+  pp = pprint.PrettyPrinter(indent=2)
+  # pp.pprint(data['routes'])
+  # exit()
 
   # calculate how many days from today until end day
   days_left = days_til_end(data['calendar'])
@@ -174,8 +200,6 @@ if __name__ == "__main__":
 
 
 # additional features to add next releases:
-# manually assign a bus to a route
-# should specify if bus should run that day or not
 # option in daily to manually set date you're calculating for
 # consider moving away from having evening hard coded in as being named "evening"
 #   alex suggests having another column and listing the route(s) it can double with

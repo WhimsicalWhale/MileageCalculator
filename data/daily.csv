@@ -1,5 +1,16 @@
-Bus,Current Mileage,Should run?
-one,85,T
-two,200,T
-three,90,T
-four,265,T
+Bus,Current Mileage,Should run?,Manual Route Assignment
+1418,95949,T,
+1419,97031,T,
+1422,94500,T,
+1746,70626,T,
+1747,65661,T,
+1908,19311,T,
+1942,23801,T,
+1943,23725,T,
+2013,6043,T,
+2014,6239,T,
+2015,6267,T,
+2016,5899,T,
+1480,105254,T,
+1420,98956,T,
+1421,93282,T,

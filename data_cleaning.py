@@ -42,8 +42,17 @@ parsing_dict = {
     'should_run': parse_as_boolean,
     'weekends': parse_as_boolean,
     'excluded': parse_excluded_list,
-    'date': parse_as_date
+    'date': parse_as_date,
+    'assigned_route': lambda x: x
 }
+
+def is_route(name, routes):
+    if name == '':
+        return name
+    for route in routes:
+        if route['name'] == name:
+            return name
+    raise Exception("You have attempted to manually assign a bus to {}, which is not a real route.".format(name))
 
 def parse_field(field, label):
     return parsing_dict[label](field)
@@ -79,13 +88,14 @@ def load_calendar_data():
     return calendar
 
 def add_daily_data(data):
-    daily_data = load_data('data/daily.csv', ['bus_name','curr_mileage','should_run'])
+    daily_data = load_data('data/daily.csv', ['bus_name','curr_mileage','should_run', 'assigned_route'])
     for i in range(len(data['buses'])):
         for daily in daily_data:
             if data['buses'][i]['name'] == daily['bus_name']:
-                # update current_mileage and should_run
+                # update current_mileage, should_run, and any assigned route
                 data['buses'][i]['current_mileage'] = daily['curr_mileage']
                 data['buses'][i]['should_run'] = daily['should_run']
+                data['buses'][i]['assigned_route'] = is_route(daily['assigned_route'], data['routes'])
     return data
 
 def update_exclusions(buses):
