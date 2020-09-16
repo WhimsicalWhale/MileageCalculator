@@ -2,6 +2,7 @@ import json
 import datetime
 import copy
 import sys
+import time
 import pprint
 from data_cleaning import load_all_data
 
@@ -59,11 +60,8 @@ def add_routes_basic(buses, routes, pair):
     bus['routes'] = []
     if bus['assigned_route'] != '':
       specific_assignments = True
-  removed_buses = []
-  for bus in buses:
-    if not bus['should_run']:
-      removed_buses.append(bus)
-      buses.remove(bus)
+  removed_buses = [x for x in buses if not x['should_run']]
+  buses = [x for x in buses if x['should_run']]
   # we're going to add a "fake" route that is our pairing and take out the two we've paired
   processed_routes = copy.deepcopy(routes)
   merge_pair(processed_routes, pair)
@@ -178,7 +176,7 @@ if __name__ == "__main__":
   data = load_all_data()
 
   pp = pprint.PrettyPrinter(indent=2)
-  # pp.pprint(data['routes'])
+  # pp.pprint(data['buses'])
   # exit()
 
   # calculate how many days from today until end day
