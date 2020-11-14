@@ -101,7 +101,15 @@ def add_daily_data(data):
 def update_exclusions(buses):
     for bus in buses:
         if 'evening' in bus['excluded']:
-            bus['excluded'].append('fake')    
+            bus['excluded'].append('fake')
+
+def check_route_exclusions(data):
+    just_route_names = [route['name'] for route in data['routes']]
+    just_route_names.append('fake')
+    for bus in data['buses']:
+        for exRoute in bus['excluded']:
+            if exRoute not in just_route_names:
+                print('WARNING: Bus ' + bus['name'] + ' has route ' + exRoute + ' listed in their exclusions, but that route is not listed as an official route.')
 
 def load_all_data():
     # set up all our variables we're going to use
@@ -126,6 +134,9 @@ def load_all_data():
 
     # fix bus exclusions
     update_exclusions(data['buses'])
+
+    # warning if any of the buses have a route excluded that isn't listed in the routes
+    check_route_exclusions(data)
 
     # return the parsed data
     return data
