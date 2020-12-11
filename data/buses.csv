@@ -1,13 +1,13 @@
 Name,Goal Mileage,Exclusions
-1418,105000,evening-housing1-housing2
+1418,105000,evening
 1419,105000,evening
-1422,105000,
-1480,105000,evening-purple1-purple2-purple3-green1-green2-platinum1-platinum2
 1420,105000,evening
-1421,105000,evening
-1746,80000,
+1421,105000,evening-green1-red1-orange
+1422,105000,
+1480,105000,evening-green1-purple1-platinum1
+1746,75000,
 1747,75000,
-1908,34000,evening-purple1-purple2-purple3-green1-green2-platinum1-platinum2
+1908,34000,evening-purple1-green1-platinum1
 1942,34000,
 1943,34000,
 2013,17000,

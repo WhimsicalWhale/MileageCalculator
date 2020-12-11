@@ -20,7 +20,7 @@ def days_til_end(calendar):
     diff = sum(1 for day in day_generator if day.weekday() < 5)
   # drop the holidays that need dropped
   for holiday in calendar['holidays']:
-    holiday_as_date = parse_time(calendar['end_day'])
+    holiday_as_date = parse_time(holiday)
     if (holiday_as_date - today).days >= 0 and (holiday_as_date - end_day).days >= 0:
       diff -= 1
   return diff
@@ -181,6 +181,8 @@ if __name__ == "__main__":
 
   # calculate how many days from today until end day
   days_left = days_til_end(data['calendar'])
+  if days_left == 0:
+    days_left = 1
 
   # calculate the target mileage for each bus
   for bus in data['buses']:
