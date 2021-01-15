@@ -154,9 +154,12 @@ def process_not_assigned(buses, routes):
     print()
   return not_assigned
 
-def multiple_routes(routes):
-  if not routes:
+def multiple_routes(bus):
+  routes = bus['routes']
+  if not routes and not bus['should_run']:
     return "None"
+  elif not routes:
+    return "SPARE"
   ret = ''
   for route in routes:
     ret += route['name'] + ' (' + str(route['avg_daily_mileage'])[:-2] + '), '
@@ -165,7 +168,11 @@ def multiple_routes(routes):
 def output_routes(buses):
   print('BUS\tCURRENT\t\tTARGET\t\tROUTE AND AVG MILEAGE')
   for bus in buses:
-    print('{}\t{:<16.0f}{:<16.2f}{}'.format(bus['name'], bus['current_mileage'], bus['target_mileage'], multiple_routes(bus['routes'])))
+    print('{}\t{:<16.0f}{:<16.2f}{}'.format(
+      bus['name'],
+      bus['current_mileage'],
+      bus['target_mileage'],
+      multiple_routes(bus)))
 
 
 if __name__ == "__main__":

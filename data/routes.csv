@@ -1,8 +1,12 @@
 Route, Avg Daily Mileage, can be doubled?
 red1,130,FALSE
+red2,55,TRUE
 blue,140,FALSE
 platinum1,130,FALSE
+platinum2,88,TRUE
 green1,120,FALSE
+green2,87,TRUE
 purple1,143,FALSE
+purple2,103,TRUE
 orange,132,FALSE
 evening,40,TRUE
