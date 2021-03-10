@@ -41,7 +41,7 @@ def add_routes(buses, routes):
     assignments = copy.deepcopy(buses)
     add_routes_basic(assignments, routes, pair)
     # "score" the resulting assignments
-    curr_score = score_assignments(assignments)
+    curr_score = score_assignments(assignments, routes)
     if curr_score < best['score']:
       best['score'] = curr_score
       best['buses'] = assignments
@@ -126,10 +126,19 @@ def split_pair(routes, pair):
       paired = route
   return (evening, paired)
 
-def score_assignments(buses):
+def score_assignments(buses, routes = []):
   total = 0
+  assigned = []
   for bus in buses:
     total += abs(get_expected_mileage(bus) - bus['target_mileage'])
+    if routes:
+      for route in bus['routes']:
+        assigned.append(route['name'])
+  if routes:
+    not_assigned = []
+    for route in routes:
+      if route['name'] not in assigned:
+        total += 10000
   return total
 
 def get_expected_mileage(bus):
