@@ -161,6 +161,7 @@ def process_not_assigned(buses, routes):
     for route_name in not_assigned:
       print('Route {} was not assigned'.format(route_name))
     print()
+    input("Hit enter to see route assignments")
   return not_assigned
 
 def multiple_routes(bus):
@@ -185,9 +186,6 @@ def output_routes(buses):
 
 
 if __name__ == "__main__":
-  # so the user knows things have started
-  print("Calculating, please wait...\n", flush=True)
-
   # load the data
   data = load_all_data()
 

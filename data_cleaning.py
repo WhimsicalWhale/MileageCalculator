@@ -106,10 +106,16 @@ def update_exclusions(buses):
 def check_route_exclusions(data):
     just_route_names = [route['name'] for route in data['routes']]
     just_route_names.append('fake')
+    did_warn = False
     for bus in data['buses']:
         for exRoute in bus['excluded']:
+            if not did_warn and exRoute not in just_route_names:
+                print('!!! Nonexistent route detected !!!')
             if exRoute not in just_route_names:
-                print('WARNING: Bus ' + bus['name'] + ' has route ' + exRoute + ' listed in their exclusions, but that route is not listed as an official route.')
+                did_warn = True
+                print('Bus ' + bus['name'] + ' has route ' + exRoute + ' listed in their exclusions, but that route is not listed in routes.csv.')
+    if did_warn:
+        input('Results may not be accurate/desired.\n\nHit enter to see route assignments.')
 
 def load_all_data():
     # set up all our variables we're going to use
