@@ -27,7 +27,7 @@ def parse_excluded_list(field):
     return field
 
 def parse_as_date(field):
-    if re.match(r'\d\d\/\d\d\/20\d\d$', field) == None:
+    if re.match(r'\d{1,2}\/\d{1,2}\/20\d\d$', field) == None:
         raise Exception("Dates must be in MM/DD/YYYY format, got {} instead".format(field))
     return field
 

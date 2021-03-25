@@ -1,0 +1,6 @@
+navigate to the folder that contains the mileage computer's program.py
+
+run the following command:
+pyinstaller -F program.py
+
+will find exe in the dist folder that is created; can delete spec file and build folder

@@ -8,10 +8,8 @@ import pprint
 from data_cleaning import load_all_data
 
 def parse_time(date_str):
-  if re.match(r'\d\d\/\d\d\/20\d\d$', date_str):
+  if re.match(r'\d{1,2}\/\d{1,2}\/20\d\d$', date_str):
     return datetime.datetime.strptime(date_str, '%m/%d/%Y')
-  elif re.match(r'\d\d\/\d\d\/\d\d$', date_str):
-    return datetime.datetime.strptime(date_str, '%m/%d/%y')
 
 def days_til_end(calendar):
   today = datetime.datetime.now()
