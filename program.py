@@ -1,5 +1,6 @@
 import json
 import datetime
+import re
 import copy
 import sys
 import time
@@ -7,7 +8,10 @@ import pprint
 from data_cleaning import load_all_data
 
 def parse_time(date_str):
-  return datetime.datetime.strptime(date_str, '%m/%d/%Y')
+  if re.match(r'\d\d\/\d\d\/20\d\d$', date_str):
+    return datetime.datetime.strptime(date_str, '%m/%d/%Y')
+  elif re.match(r'\d\d\/\d\d\/\d\d$', date_str):
+    return datetime.datetime.strptime(date_str, '%m/%d/%y')
 
 def days_til_end(calendar):
   today = datetime.datetime.now()
@@ -210,6 +214,9 @@ if __name__ == "__main__":
 
   # output which routes each bus was assigned to
   output_routes(data['buses'])
+
+  # hold the program open
+  input('hit enter to close the program')
 
 
 
