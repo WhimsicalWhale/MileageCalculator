@@ -33,9 +33,12 @@ def add_routes(buses, routes):
     'score': sys.maxsize
   }
 
-  # get all the evening pairings
-  pairs = all_evening_pairings(routes, buses)
-  pairs.append(None)
+  # get all the evening pairings, if evening isn't already manually assigned
+  if should_pair_evening(buses):
+    pairs = all_evening_pairings(routes, buses)
+    pairs.append(None)
+  else:
+    pairs = [None]
 
   # go through and calculate all assignments given each pair
   for pair in pairs:
@@ -90,6 +93,12 @@ def add_routes_basic(buses, routes, pair):
           bus['routes'].append(route)
         break
   buses.extend(removed_buses)
+
+def should_pair_evening(buses):
+  for bus in buses:
+    if bus['assigned_route'] == 'evening':
+      return False
+  return True
 
 def all_evening_pairings(routes, buses):
   not_allowed = []
