@@ -90,7 +90,7 @@ def load_calendar_data():
     return calendar
 
 def add_daily_data(data):
-    daily_data = load_data('data/daily.csv', ['bus_name','curr_mileage','use_oil_change','should_run', 'assigned_route'])
+    daily_data = load_data('data/daily.csv', ['bus_name','curr_mileage','should_run','use_oil_change','assigned_route'])
     for i in range(len(data['buses'])):
         for daily in daily_data:
             if data['buses'][i]['name'] == daily['bus_name']:

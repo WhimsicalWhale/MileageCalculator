@@ -227,11 +227,6 @@ if __name__ == "__main__":
   input('hit enter to close the program')
 
 
-# feature request:
-# CHECK add column to bus table, "next oil change mileage"
-# CHECK add column to daily that allows calculations based on oil change mileage
-# CHECK output has additional "miles to oil change" column
-
 # additional features to add next releases:
 # option in daily to manually set date you're calculating for
 # consider moving away from having evening hard coded in as being named "evening"
