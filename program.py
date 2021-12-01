@@ -187,13 +187,13 @@ def multiple_routes(bus):
   return ret[:-2]
 
 def output_routes(buses):
-  print('BUS\tCURRENT\t\tTARGET\t\tOIL CHANGE\tROUTE AND AVG MILEAGE')
+  print('BUS\tCURRENT\t\tTARGET\t\tOIL CHANGE IN:\tROUTE AND AVG MILEAGE')
   for bus in buses:
     print('{}\t{:<16.0f}{:<16.2f}{:<16.0f}{}'.format(
       bus['name'],
       bus['current_mileage'],
       bus['target_mileage'],
-      bus['oil_change'],
+      bus['oil_change'] - bus['current_mileage'],
       multiple_routes(bus)))
 
 
