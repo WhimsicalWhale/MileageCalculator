@@ -37,8 +37,10 @@ parsing_dict = {
     'curr_mileage': parse_as_digit,
     'desired_mileage': parse_as_digit,
     'avg_daily_mileage': parse_as_digit,
+    'oil_change': parse_as_digit,
     'can_double': parse_as_boolean,
     'available_evening': parse_as_boolean,
+    'use_oil_change': parse_as_boolean,
     'should_run': parse_as_boolean,
     'weekends': parse_as_boolean,
     'excluded': parse_excluded_list,
@@ -88,14 +90,16 @@ def load_calendar_data():
     return calendar
 
 def add_daily_data(data):
-    daily_data = load_data('data/daily.csv', ['bus_name','curr_mileage','should_run', 'assigned_route'])
+    daily_data = load_data('data/daily.csv', ['bus_name','curr_mileage','use_oil_change','should_run', 'assigned_route'])
     for i in range(len(data['buses'])):
         for daily in daily_data:
             if data['buses'][i]['name'] == daily['bus_name']:
-                # update current_mileage, should_run, and any assigned route
+                # update current_mileage, should_run, whether to use the oil change target mileage, and any assigned route
                 data['buses'][i]['current_mileage'] = daily['curr_mileage']
                 data['buses'][i]['should_run'] = daily['should_run']
                 data['buses'][i]['assigned_route'] = is_route(daily['assigned_route'], data['routes'])
+                if daily['use_oil_change']:
+                    data['buses'][i]['desired_mileage'] = data['buses'][i]['oil_change']
     return data
 
 def update_exclusions(buses):
@@ -123,6 +127,7 @@ def load_all_data():
     bus_labels = [
         'name',
         'desired_mileage',
+        'oil_change',
         'excluded',
         'available_evening'
     ]

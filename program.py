@@ -187,12 +187,13 @@ def multiple_routes(bus):
   return ret[:-2]
 
 def output_routes(buses):
-  print('BUS\tCURRENT\t\tTARGET\t\tROUTE AND AVG MILEAGE')
+  print('BUS\tCURRENT\t\tTARGET\t\tOIL CHANGE\tROUTE AND AVG MILEAGE')
   for bus in buses:
-    print('{}\t{:<16.0f}{:<16.2f}{}'.format(
+    print('{}\t{:<16.0f}{:<16.2f}{:<16.0f}{}'.format(
       bus['name'],
       bus['current_mileage'],
       bus['target_mileage'],
+      bus['oil_change'],
       multiple_routes(bus)))
 
 
@@ -200,7 +201,7 @@ if __name__ == "__main__":
   # load the data
   data = load_all_data()
 
-  pp = pprint.PrettyPrinter(indent=2)
+  # pp = pprint.PrettyPrinter(indent=2)
   # pp.pprint(data['buses'])
   # exit()
 
@@ -226,6 +227,10 @@ if __name__ == "__main__":
   input('hit enter to close the program')
 
 
+# feature request:
+# CHECK add column to bus table, "next oil change mileage"
+# CHECK add column to daily that allows calculations based on oil change mileage
+# CHECK output has additional "miles to oil change" column
 
 # additional features to add next releases:
 # option in daily to manually set date you're calculating for

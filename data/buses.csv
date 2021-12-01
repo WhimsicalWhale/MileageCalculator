@@ -1,16 +1,17 @@
-Name,Goal Mileage,Exclusions
-1418,113500,evening-green1-green2-platinum1-blue-orange-purple1-red1
-1419,113500,evening-purple1-green1-platinum1-red1-orange-blue
-1420,113500,evening-purple1-green1-green2-platinum1-red1-orange-blue
-1421,113500,evening-green1-green2
-1422,113500,
-1480,113500,evening-green1-green2-purple1-purple2-platinum1-platinum2
-1746,80000,
-1747,80000,
-1908,42500,evening-purple1-purple2-green1-green2-platinum1-platinum2
-1942,42500,
-1943,42500,
-2013,25500,
-2014,25500,
-2015,25500,
-2016,25500,
+Name,Goal Mileage,Next Oil Change,Exclusions
+1418,119000,0,evening-green1-green2-blue-blue2
+1419,119000,0,evening-blue-blue2
+1420,119000,0,evening-green2-green1-blue-blue2
+1421,119000,0,evening-green1-green2-blue-blue2
+1422,119000,0,evening-blue-blue2
+1746,90000,0,blue-blue2
+1747,90000,0,blue-blue2
+1908,48000,0,purple1-purple2-green1-green2-platinum1-platinum2-evening-blue-blue2
+1942,48000,0,blue-blue2
+1943,48000,0,blue-blue2
+2013,28000,0,blue-blue2
+2014,28000,0,blue-blue2
+2015,28000,0,blue-blue2
+2016,28000,0,blue-blue2
+1700,30000,0,evening-green1-green2-red1-red2-platinum1-platinum2-orange-purple1-purple2
+1706,30000,0,evening-green1-green2-red1-red2-platinum1-platinum2-orange-purple1-purple2
